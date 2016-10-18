@@ -49,14 +49,14 @@ SELECT [TOP setLimit] selectList FROM fromClause
 <li>(optional) ORDER BY column(s) specifies the order in which the rows should appear in the results set</li>
 </ul>
 <h3>The Gaia Archive as a relational database</h3>
-<p>The Gaia Archive presents an <a href="http://archives.esac.esa.int/gaia/">interactive User Interface for web browsers</a> (hereafter the Gaia archive) and a programmatic Table Access Protocol web service that feature an ADQL interface at their core. Behind this interface is a set of tables in an RDBMS, e.g.</p>
+<p>The Gaia Archive presents an <a href="http://gea.esac.esa.int/archive/">interactive User Interface for web browsers</a> (hereafter the Gaia archive) and a programmatic Table Access Protocol web service that feature an ADQL interface at their core. Behind this interface is a set of tables in an RDBMS, e.g.</p>
 <ul>
 <li>gaia_source: the main Gaia source table</li>
-<li>tgas_source: the subset of Gaia sources with full five-parameter astrometric solutions, including proper motions and parallaxes, in DR1 (as determined from the <a href="http://arxiv.org/abs/1412.8770">Tycho-Gaia Astrometric Solution</a>)</li>
+<li>tgas_source: the subset of Gaia sources with full five-parameter astrometric solutions, including proper motions and parallaxes, in DR1 (as determined from the <a href="https://arxiv.org/abs/1412.8770">Tycho-Gaia Astrometric Solution</a>)</li>
 <li>tables of "external" catalogue data from other large-scale survey missions (Hipparcos, 2MASS, SDSS, ...)</li>
 <li>precomputed crossmatch tables between the external catalogues and gaia_source</li>
 </ul>
-<p>To browse the tables and their contents, simply click on the "Search" tab in the <a href="http://archives.esac.esa.int/gaia/">Gaia archive</a>, then the ADQL form sub-tab, and explore via the tree-view in the panel on the left hand side.
+<p>To browse the tables and their contents, simply click on the "Search" tab in the <a href="http://gea.esac.esa.int/archive/">Gaia archive</a>, then the ADQL form sub-tab, and explore via the tree-view in the panel on the left hand side.
 Note that the Gaia archive contains several databases to track different Gaia releases and public non-Gaia data (e.g. from
 cross-matched surveys). Gaia DR1 data are held in database "gaiadr1" while the other public datasets are
 contained in database "public". Names of tables containing Gaia data should be prefixed with "gaiadr1" while the others should
@@ -90,7 +90,7 @@ SELECT TOP 1 'Hello world!' AS greeting, ra, dec FROM gaiadr1.tgas_source
 </li>
 </ul><p>Note also the following:</p>
 <ul>
-<li>The database contains measured parallaxes rather than calculated (or inferred) distances - there is a very good reason for this that is beyond the scope of this manual but for further information please see <a href="http://arxiv.org/abs/1507.02105">Bailer-Jones (2015)</a>;</li>
+<li>The database contains measured parallaxes rather than calculated (or inferred) distances - there is a very good reason for this that is beyond the scope of this manual but for further information please see <a href="https://arxiv.org/abs/1507.02105">Bailer-Jones (2015)</a>;</li>
 <li>NULL fields: BEWARE! The Gaia archive RDBMS employs NULL for attributes when no value is available (rather than "default" values) - see the next section for more details and for the implications of this approach.</li>
 </ul>
 <h3>The implications of NULL</h3>
@@ -334,7 +334,7 @@ specified for coordinates stored in the archive.</li>
 </ul></div>
 <div resource="#GDAS-BR-06" typeof="example" id="GDAS-BR-06">
 <h3 property="name">I liked the statistical plots presented in Section 3 of Volume 1 of the Hipparcos and Tycho Catalogues. Show me the same for Gaia and allow me to specify the statistic to explore (GDAS-BR-06)</h3>
-<p>Embedded within the <a href="http://www.rssd.esa.int/doc_fetch.php?id=2779219">Gaia sourceID</a> attribute used as a unique identifier for all detected sources is a level-12 <a href="http://arxiv.org/pdf/astro-ph/0409513v1.pdf">Hierarchical Equal Area iso-Latitude Pixelization</a> (HEALPix) index value, and this can be conveniently employed to form statistical aggregates in ADQL using "... GROUP BY..". The HEALPix index uses bits 36 and upwards in sourceID and dividing that attribute by 2^35 extracts the relevant information. The trick is to note that for practical visualisation purposes the number of distinct sky pixels afforded by level-12 HEALPix indexation (around 200 million) is too high but this can be degraded straightforwardly to a practical yet still useful level by dividing by further factors of 4 per level. For example, degrading to level 7 (just under 200000 distinct sky pixels) which is 5 powers of 4, or 10 of 2, we require to divide sourceID by 2^45:</p>
+<p>Embedded within the <a href="http://www.rssd.esa.int/doc_fetch.php?id=2779219">Gaia sourceID</a> attribute used as a unique identifier for all detected sources is a level-12 <a href="https://arxiv.org/pdf/astro-ph/0409513v1.pdf">Hierarchical Equal Area iso-Latitude Pixelization</a> (HEALPix) index value, and this can be conveniently employed to form statistical aggregates in ADQL using "... GROUP BY..". The HEALPix index uses bits 36 and upwards in sourceID and dividing that attribute by 2^35 extracts the relevant information. The trick is to note that for practical visualisation purposes the number of distinct sky pixels afforded by level-12 HEALPix indexation (around 200 million) is too high but this can be degraded straightforwardly to a practical yet still useful level by dividing by further factors of 4 per level. For example, degrading to level 7 (just under 200000 distinct sky pixels) which is 5 powers of 4, or 10 of 2, we require to divide sourceID by 2^45:</p>
 <pre property="query">
 SELECT source_id/35184372088832 AS hpx7, COUNT(*) AS nsrc
 FROM gaiadr1.gaia_source
@@ -472,7 +472,7 @@ WHERE SQRT(pmra*pmra + pmdec*pmdec) > 3000
 </div>
 <div resource="#GDAS-ST-05" typeof="example" id="GDAS-ST-05">
 <h3 property="name">Linear combinations of quantities should be queryable (GDAS-ST-05)</h3>
-<p>This is straightforward in ADQL: a filter predicate in the WHERE clause is not limited to simple mathematical equalities involving literal constants. For example, to select how many TGAS sources have a total proper motion measured with greater than 5&#963; significance (cf. <a href="http://arxiv.org/pdf/0711.3593v1.pdf">Hambly et al. (2008)</a> Section 4.2.2):</p>
+<p>This is straightforward in ADQL: a filter predicate in the WHERE clause is not limited to simple mathematical equalities involving literal constants. For example, to select how many TGAS sources have a total proper motion measured with greater than 5&#963; significance (cf. <a href="https://arxiv.org/pdf/0711.3593v1.pdf">Hambly et al. (2008)</a> Section 4.2.2):</p>
 
 <pre property="query">
 SELECT COUNT(*)
@@ -505,7 +505,7 @@ WHERE pmra*pmra + pmdec*pmdec &lt;
 <ul>
 
 <li>Here we limit the results set to the first ten rows for illustration only</li>
-<li>Astrometric error filters should be used in conjunction with the "excess noise" attributes to allow for the presence of systematic errors (see, for example <a href="http://arxiv.org/abs/1112.4139">the  Gaia Astrometric Global Iterative Solution</a> paper or the online documentation).</li>
+<li>Astrometric error filters should be used in conjunction with the "excess noise" attributes to allow for the presence of systematic errors (see, for example <a href="https://arxiv.org/abs/1112.4139">the  Gaia Astrometric Global Iterative Solution</a> paper or the online documentation).</li>
 <li>Once again no account is taken here of error correlation</li>
 </ul>
 <!-- === I would like to be able to do on-the-fly smoothing/ averaging of the data such that queries can be composed giving properties per spatial bin - for instance - binned in 1 arc min elements (GDAS-BR-15) === -->
@@ -720,7 +720,7 @@ ORDER BY s.sdssdr9_oid, x.angular_distance
 <p>For convenience here is a set of links to follow for further useful information:</p>
 <ul>
 <li><a href="http://www.rssd.esa.int/doc_fetch.php?id=3125400">Gaia data access scenarios summary</a> (DPAC document code GAIA-C9-TN-LEI-AB-026)</li>
-<li><a href="http://archives.esac.esa.int/gaia/">Gaia Archive Core Systems User Interface</a> (Gaia archive)</li>
+<li><a href="http://gea.esac.esa.int/archive/">Gaia Archive Core Systems User Interface</a> (Gaia archive)</li>
 <li><a href="http://docs.g-vo.org/adql-gaia/html/index.html">Gaia queries with ADQL and TAP</a> (a short course presented as part of a GAVO workshop preparing for the Gaia DR1)</li>
 <li><a href="http://tapvizier.u-strasbg.fr/adql/help.html">CDS Vizier ADQL cheat-sheet</a></li>
 <li><a href="http://ges.roe.ac.uk/sqlcookbook_idr1.html">Gaia-ESO Science Archive cookbook</a> (N.B. this describes a raw SQL interface as opposed to ADQL)</li>
